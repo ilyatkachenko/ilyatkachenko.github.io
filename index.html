@@ -1,12 +1,398 @@
-<!DOCTYPE html><html lang="en"><head>
-  <meta charset="utf-8">
-  <title>Graphic Design Tkachenko I.M.</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-<style>@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i);@import url(https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;*,:after,:before{box-sizing:border-box;}body{margin:0;line-height:1.5;}body{font-family:Comfortaa,cursive;color:#000;overflow-x:hidden;font-size:22px;}body,html{height:100%;}*{box-sizing:border-box;}</style><link rel="stylesheet" href="styles.2dbe575eb97df3ab9a7e.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.2dbe575eb97df3ab9a7e.css"></noscript></head>
-<body>
-  <app-root></app-root>
-<script src="runtime.704a85ae7c509120f663.js" defer></script><script src="polyfills.b9a790eb67222d115c89.js" defer></script><script src="main.5ff487edbee76d5a876d.js" defer></script>
+<!DOCTYPE html>
 
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Battle of the Tribes | Real-time PvP Match-3</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@700;800&amp;family=Space+Grotesk:wght@700&amp;family=Be+Vietnam+Pro:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#ffd7f5",
+                        "tertiary-container": "#ffd700",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed-variant": "#810081",
+                        "on-tertiary": "#3a3000",
+                        "inverse-on-surface": "#2e3034",
+                        "on-tertiary-fixed-variant": "#544600",
+                        "background": "#111317",
+                        "on-error-container": "#ffdad6",
+                        "surface": "#111317",
+                        "surface-dim": "#111317",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed": "#ffe16d",
+                        "on-secondary-container": "#500050",
+                        "surface-variant": "#333539",
+                        "secondary-fixed-dim": "#ffabf3",
+                        "tertiary": "#fff5de",
+                        "on-surface": "#e2e2e7",
+                        "on-primary-container": "#006970",
+                        "tertiary-fixed-dim": "#e9c400",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-secondary-fixed": "#380038",
+                        "inverse-primary": "#006970",
+                        "outline-variant": "#3b494b",
+                        "surface-container-highest": "#333539",
+                        "primary-container": "#00f0ff",
+                        "on-tertiary-fixed": "#221b00",
+                        "outline": "#849495",
+                        "primary-fixed": "#7df4ff",
+                        "on-error": "#690005",
+                        "surface-container": "#1e2023",
+                        "surface-container-low": "#1a1c1f",
+                        "on-primary-fixed-variant": "#004f54",
+                        "inverse-surface": "#e2e2e7",
+                        "surface-tint": "#00dbe9",
+                        "surface-container-lowest": "#0c0e12",
+                        "surface-container-high": "#282a2e",
+                        "primary": "#dbfcff",
+                        "on-tertiary-container": "#705d00",
+                        "on-primary-fixed": "#002022",
+                        "on-secondary": "#5b005b",
+                        "error-container": "#93000a",
+                        "secondary": "#ffabf3",
+                        "on-background": "#e2e2e7",
+                        "surface-bright": "#37393d",
+                        "secondary-container": "#fe00fe",
+                        "on-primary": "#00363a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "container-margin": "32px",
+                        "gutter": "16px",
+                        "card-padding": "24px"
+                    },
+                    "fontFamily": {
+                        "label-bold": ["Space Grotesk"],
+                        "headline-md": ["Epilogue"],
+                        "headline-xl": ["Epilogue"],
+                        "body-sm": ["Be Vietnam Pro"],
+                        "body-lg": ["Be Vietnam Pro"]
+                    },
+                    "fontSize": {
+                        "label-bold": ["12px", {"lineHeight": "1", "fontWeight": "700"}],
+                        "headline-md": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .stone-card {
+            background-image: linear-gradient(to bottom, #333539, #1e2023);
+            border: 4px solid #3b494b;
+            box-shadow: inset 0 2px 10px rgba(0, 219, 233, 0.1), 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        .stone-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0; height: 15%;
+            background: linear-gradient(to top, rgba(34, 197, 94, 0.15), transparent);
+            pointer-events: none;
+        }
+        .glowing-btn-primary {
+            background-color: #00f0ff;
+            color: #002022;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            border-top: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        .glowing-btn-primary:hover {
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
+            transform: scale(1.05);
+        }
+        .crystal-node {
+            width: 8px;
+            height: 8px;
+            background: #00dbe9;
+            box-shadow: 0 0 10px #00dbe9;
+            transform: rotate(45deg);
+        }
+        .ornate-frame {
+            border: 8px solid transparent;
+            border-image: linear-gradient(45deg, #849495, #3b494b) 1;
+        }
+        .hero-vignette {
+            background: radial-gradient(circle, transparent 20%, rgba(17, 19, 23, 0.95) 100%);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-lg selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar Shell -->
+<header class="bg-surface-container-low/80 dark:bg-surface-container-low/80 backdrop-blur-md text-primary dark:text-primary-fixed docked full-width top-0 border-b-2 border-outline-variant/30 bg-surface-container-low/90 border-b border-outline-variant shadow-[0_4px_20px_rgba(0,219,233,0.15)] flex justify-between items-center w-full px-8 py-4 max-w-full mx-auto fixed z-50">
+<div class="text-headline-md font-headline-xl text-primary dark:text-primary-fixed tracking-tight w-full md:w-auto text-center md:text-left">Battle of the Tribes</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors text-label-bold font-label-bold transition-all duration-300" href="#gameplay">Gameplay</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors text-label-bold font-label-bold transition-all duration-300" href="#races">Races</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors text-label-bold font-label-bold transition-all duration-300" href="#support">Support</a>
+</nav>
+<div class="hidden md:flex items-center gap-3">
+<button class="glowing-btn-primary px-4 py-2 rounded-lg font-label-bold text-label-bold scale-105 transition-transform cursor-pointer uppercase tracking-wider flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+        Google Play
+    </button>
+<a href="https://apps.apple.com/us/app/battle-of-the-tribes/id6759261063" target="_blank" class="glowing-btn-primary px-4 py-2 rounded-lg font-label-bold text-label-bold scale-105 transition-transform cursor-pointer uppercase tracking-wider flex items-center gap-2 no-underline">
+<span class="material-symbols-outlined text-[18px]">smartphone</span>
+        App Store
+    </a>
+</div>
+</header>
+<!-- Section 1: Hero -->
+<section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden pt-20">
+<div class="absolute inset-0 z-0">
+<img alt="Ancient cavern filled with glowing crystals" class="w-full h-full object-cover" data-alt="A cinematic, high-fantasy cavern interior featuring massive, glowing blue and purple crystals emerging from weathered stone surfaces. The lighting is moody and dark with intense cyan and magenta glows illuminating the rocky ground and ancient pillars. The style is detailed and skeuomorphic, evoking a sense of ancient magic and epic adventure. Small magical particles float in the air, enhancing the atmospheric depth and mystical ambiance." src="assets/images/main.png"/>
+<div class="absolute inset-0 hero-vignette"></div>
+</div>
+<div class="relative z-10 text-center max-w-4xl px-container-margin">
+<div class="inline-flex items-center gap-2 mb-6 px-4 py-1 rounded-full bg-primary-container/20 border border-primary-container/40">
+<span class="crystal-node"></span>
+<span class="text-white font-label-bold text-label-bold tracking-widest uppercase" style="text-shadow: 0 1px 8px rgba(0,0,0,0.9), 0 2px 20px rgba(0,0,0,0.8);">Global PvP Arena</span>
+<span class="crystal-node"></span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-white mb-6 leading-tight" style="text-shadow: 0 1px 8px rgba(0,0,0,0.9), 0 2px 20px rgba(0,0,0,0.8);">Real-time PvP match-3 battles!</h1>
+<p class="font-body-lg text-body-lg text-white mb-10 max-w-2xl mx-auto" style="text-shadow: 0 1px 8px rgba(0,0,0,0.9), 0 2px 20px rgba(0,0,0,0.8);">Swap tiles, cast spells, and crush opponents. Choose your hero and dominate the leaderboard!</p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+<button class="glowing-btn-primary w-full max-w-[250px] px-8 py-3 rounded-xl font-label-bold text-label-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300">
+<span class="material-symbols-outlined text-[24px]">play_arrow</span>
+        Google Play
+    </button>
+<a href="https://apps.apple.com/us/app/battle-of-the-tribes/id6759261063" target="_blank" class="glowing-btn-primary w-full max-w-[250px] px-8 py-3 rounded-xl font-label-bold text-label-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300 no-underline">
+<span class="material-symbols-outlined text-[24px]">smartphone</span>
+        App Store
+    </a>
+</div>
+</div>
+</section>
+<!-- Section 2: Gameplay & Rules -->
+<section id="gameplay" class="bg-surface py-24 relative overflow-hidden">
+<!-- Ornate Framing Background Decor -->
+<div class="absolute top-0 left-0 w-full h-4 bg-outline-variant/20"></div>
+<div class="max-w-7xl mx-auto px-container-margin">
+<div class="flex flex-col md:flex-row gap-gutter items-center mb-16">
+<div class="md:w-1/2">
+<h2 class="font-headline-xl text-headline-xl text-secondary mb-6">Battle of the Tribes</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8">Competitive real-time PvP match-3 where two players fight head-to-head on their own magical boards. You have 120 seconds — make every move count!</p>
+<div class="stone-card p-card-padding rounded-xl mb-8 border-l-8 border-l-primary-container">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary-container text-4xl">timer</span>
+<div>
+<h3 class="font-headline-md text-headline-md text-primary mb-2">120 Second Rush</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Swap adjacent tiles to create matches. Every match deals damage, earns crystals, or triggers special effects.</p>
+</div>
+</div>
+</div>
+<div class="stone-card p-card-padding rounded-xl border-l-8 border-l-tertiary-container">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-tertiary-container text-4xl" style='font-variation-settings: "FILL" 1;'>trophy</span>
+<div>
+<h3 class="font-headline-md text-headline-md text-tertiary mb-2">Win Conditions</h3>
+<ul class="text-body-sm font-body-sm text-on-surface-variant space-y-1">
+<li class="">• Reduce opponent health to zero for a KO</li>
+<li class="">• Collect more crystals before time expires</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="md:w-1/2 mt-12 md:mt-0 relative">
+<!-- Bento Grid for Tiles -->
+<div class="grid grid-cols-2 gap-4">
+<div class="stone-card p-6 flex flex-col items-center text-center rounded-xl">
+<span class="material-symbols-outlined text-error text-5xl mb-3" style='font-variation-settings: "FILL" 1;'>local_fire_department</span>
+<h4 class="font-label-bold text-label-bold text-error uppercase mb-2">Fire Tiles</h4>
+<p class="text-body-sm font-body-sm">Deal direct damage to rivals.</p>
+</div>
+<div class="stone-card p-6 flex flex-col items-center text-center rounded-xl">
+<span class="material-symbols-outlined text-primary-fixed text-5xl mb-3" style='font-variation-settings: "FILL" 1;'>diamond</span>
+<h4 class="font-label-bold text-label-bold text-primary-fixed uppercase mb-2">Crystal Tiles</h4>
+<p class="text-body-sm font-body-sm">Your primary victory points.</p>
+</div>
+<div class="stone-card p-6 flex flex-col items-center text-center rounded-xl">
+<span class="material-symbols-outlined text-tertiary-fixed text-5xl mb-3" style='font-variation-settings: "FILL" 1;'>bolt</span>
+<h4 class="font-label-bold text-label-bold text-tertiary-fixed uppercase mb-2">Lightning Tiles</h4>
+<p class="text-body-sm font-body-sm">Gain crystals + speed speed up.</p>
+</div>
+<div class="stone-card p-6 flex flex-col items-center text-center rounded-xl">
+<span class="material-symbols-outlined text-on-surface-variant text-5xl mb-3">cloud</span>
+<h4 class="font-label-bold text-label-bold text-on-surface-variant uppercase mb-2">Smoke Tiles</h4>
+<p class="text-body-sm font-body-sm">Shroud opponent's board in fog.</p>
+</div>
+<div class="stone-card p-6 flex flex-col items-center text-center rounded-xl">
+<span class="material-symbols-outlined text-primary text-5xl mb-3" style='font-variation-settings: "FILL" 1;'>ac_unit</span>
+<h4 class="font-label-bold text-label-bold text-primary uppercase mb-2">Ice Tiles</h4>
+<p class="text-body-sm font-body-sm">Freeze opponent's tempo (50% slow).</p>
+</div>
+<div class="stone-card p-6 flex flex-col items-center text-center rounded-xl">
+<span class="material-symbols-outlined text-on-primary-fixed-variant text-5xl mb-3" style='font-variation-settings: "FILL" 1;'>shield</span>
+<h4 class="font-label-bold text-label-bold text-on-primary-fixed-variant uppercase mb-2">Shield Tiles</h4>
+<p class="text-body-sm font-body-sm">Resist fire and CC effects.</p>
+</div>
+</div>
+<!-- Crystal Glow Effect behind grid -->
+<div class="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 blur-[100px] rounded-full"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Heroes & Features -->
+<section id="races" class="bg-surface-container-low py-24 relative">
+<div class="max-w-7xl mx-auto px-container-margin">
+<div class="text-center mb-16">
+<h2 class="font-headline-xl text-headline-xl text-primary mb-4">Choose Your Tribe</h2>
+<p class="text-body-lg text-on-surface-variant">Master tiles specific to your hero's race across 4 powerful tiers.</p>
+</div>
+<!-- Race Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+<!-- Orcs -->
+<div class="group relative overflow-hidden rounded-xl ornate-frame transition-all duration-300 hover:scale-[1.02]">
+<img alt="Orc Hero" class="w-full h-80 object-cover transition-all" data-alt="A fierce Orc warrior hero standing in a scorched volcanic landscape. Iron armor and bone ornaments. Dark fantasy aesthetic." src="https://lh3.googleusercontent.com/aida/ADBb0ug5z4aTRTR9MDLgWu5w6zAwOQ71n2t_UWJsMhjdU5mYJGpcq8CS1rkLgQGGcx0NbTq0Ms8sPnuAlzMREykb3MIa06dEwHyka4x5B97FJQa7m2RFKK--DG8qrSuckVfYHMSBSLQG1EEBAvSE3aoypjmoEPNJh8tiZY45T9i0tLCnNbb59ltzwIScOnyT8LvyTOe2i-qK7pIKLnHXjohhv7Fo8rSTDRvt9ohRVLCP7Y3rNwtsAxoASwjqZHW7dBEiUVznpaezO6Baj0k"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 w-full">
+<div class="flex justify-between items-end">
+<div>
+<h4 class="font-headline-md text-headline-md text-error">Orcs</h4>
+<p class="text-body-sm text-on-surface-variant">Affinity: Fire</p>
+</div>
+<span class="crystal-node"></span>
+</div>
+</div>
+</div>
+<!-- Humans -->
+<div class="group relative overflow-hidden rounded-xl ornate-frame transition-all duration-300 hover:scale-[1.02]">
+<img alt="Human Hero" class="w-full h-80 object-cover transition-all" data-alt="A noble human mage hero with a crystal-encrusted staff. High-contrast details. Dark fantasy aesthetic." src="https://lh3.googleusercontent.com/aida/ADBb0uhGzHA88lVV6C6XI-LN0ReXs5xQrRZ7_zIl7-A29wN9zo1ZPw-vuvvZPScDeUuepeA-MjRQyjUfoSdD-HwaaiSBmRzt5MJrP8kGNA1Q4n8D2FGaWgebHZBiftT9c7miV7bn6IOUmVs9j6tdiHcWaM1fftm8Pwrv0NlaLGk2PBjVkPZ1L3858h6FLyEI3tf2DC5beR8SmJKh0sINdycCcf7t9plP-k-r_9Ox89wZ7ZSCZcydGNJbIle2eOUeNGuYVFCxTixOc8awYiQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 w-full">
+<div class="flex justify-between items-end">
+<div>
+<h4 class="font-headline-md text-headline-md text-primary-fixed">Humans</h4>
+<p class="text-body-sm text-on-surface-variant">Affinity: Crystals</p>
+</div>
+<span class="crystal-node"></span>
+</div>
+</div>
+</div>
+<!-- Elves -->
+<div class="group relative overflow-hidden rounded-xl ornate-frame transition-all duration-300 hover:scale-[1.02]">
+<img alt="Elf Hero" class="w-full h-80 object-cover transition-all" data-alt="A swift Elven ranger hero with crystalline arrows. Deep greens and electric blues. Dark fantasy aesthetic." src="https://lh3.googleusercontent.com/aida/ADBb0ui-90NjtD62oIgbKI2_isZxvGvzwI9reHElVT_5U94sp-O9h0UsuDPkjXYVRWoroxon1BzleEcqR9ukI4TluNB25-ia0Y9dhcMN_PpeKBZa-Cxg65FsQsQi1K4aiBjDAGdBPxRKPILpxhbvNa8lnVtyS_IPVvZUqTZlh--E0_l477m_ZAwTPDShdvqXeKLWDy7CEPVxyjX_ylbwXxXh2nes0xuvlX_b_RjMxmBciGPNZdWj8utw-ZhGQn20KFIbhSLrv_4x8G1V2KU"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 w-full">
+<div class="flex justify-between items-end">
+<div>
+<h4 class="font-headline-md text-headline-md text-tertiary-fixed">Elves</h4>
+<p class="text-body-sm text-on-surface-variant">Affinity: Lightning</p>
+</div>
+<span class="crystal-node"></span>
+</div>
+</div>
+</div>
+<!-- Dragons -->
+<div class="group relative overflow-hidden rounded-xl ornate-frame transition-all duration-300 hover:scale-[1.02]">
+<img alt="Dragon Hero" class="w-full h-80 object-cover transition-all" data-alt="A powerful humanoid dragonkin warrior shrouded in thick grey smoke and embers. Dark obsidian scales and glowing amber eyes. Dark fantasy aesthetic." src="https://lh3.googleusercontent.com/aida/ADBb0ujvRJLtCg9XY8_8HiJkoVZZSEH9p0OGjYKcQcetV1oMN1iyZrfhVmBs8d_xMISoTn0XNS1PW-0V-_gfSmZtmBUXnh-uBj9I6fZMfFulpnV6g-VjbAD1cfRI1Y5uGwZZBzM7EchjiENhMbaKQwFJFSVk-g7T0gUbhoLbPPmcjXKOK-9Y6_wneXngLR4-QA2S3KWwQqINHScW9CvavRaVwsAZ44m9Xdsoeriv8Vh-7Q-bUAKcvwFjBAdgO-YTeILF78ae7RYninRZ8E4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 w-full">
+<div class="flex justify-between items-end">
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface-variant">Dragons</h4>
+<p class="text-body-sm text-on-surface-variant">Affinity: Smoke</p>
+</div>
+<span class="crystal-node"></span>
+</div>
+</div>
+</div>
+<!-- Undead -->
+<div class="group relative overflow-hidden rounded-xl ornate-frame transition-all duration-300 hover:scale-[1.02]">
+<img alt="Undead Hero" class="w-full h-80 object-cover transition-all" data-alt="A skeletal lich king wielding a frost-covered scythe in a frozen wasteland. Eerie blue spirit flames and ice crystals. Dark fantasy aesthetic." src="https://lh3.googleusercontent.com/aida/ADBb0uihtNPKVNdC4dUiACqmR-AELiec51RRTbfZ62q9eVdGaoLgYU46o3QwVVxqDirRsxR5HKu4Ofb2VIR8Rs3k8HsvjOwCfcq4KMFww85Ory_bFMXYlhZxChNYjPGWP3NAlyFQ-clHaTmcqINrC5ojWOZHWYq-TvI0ae-Z5cVB2ygLX5HAE7e_3Dq0OPwNUQzQK2duypGnNZp0_UvQAWstruVEgDU57eYrbMZS999mnOqlvIAYvGbF62Aj4fH8GtJA2JJTJyRXY9d0NIg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 w-full">
+<div class="flex justify-between items-end">
+<div>
+<h4 class="font-headline-md text-headline-md text-primary">Undead</h4>
+<p class="text-body-sm text-on-surface-variant">Affinity: Ice</p>
+</div>
+<span class="crystal-node"></span>
+</div>
+</div>
+</div>
+<!-- Dwarves -->
+<div class="group relative overflow-hidden rounded-xl ornate-frame transition-all duration-300 hover:scale-[1.02]">
+<img alt="Dwarf Hero" class="w-full h-80 object-cover transition-all" data-alt="A stout dwarf defender holding a massive runic shield in a deep mountain forge. Molten gold and heavy iron details. Dark fantasy aesthetic." src="https://lh3.googleusercontent.com/aida/ADBb0ujX8P-GTvyyUNP5kpseqjcpPngXoXdBhmkTdbrape70-6tgvcD-26GDALQOJNgIM4iYge24GZfYlt1x5drnlWizHPEZr4PSMaqFaIpnuJEDxxhTS1mHQ5kQ7qO5RodxzggL80HuB2lpGpnrrDJXtYTFivN2_dNjnEFVUNyIcObd9lDt-VsMTOMj6cum45aApm8PvhK2idkjyhTD71_QzDfMQqZpLMhTB1bmCKL8go6Gj98Jg-WaR7na946dLJkodrlKlnMQzRna8U4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 w-full">
+<div class="flex justify-between items-end">
+<div>
+<h4 class="font-headline-md text-headline-md text-on-primary-fixed-variant">Dwarves</h4>
+<p class="text-body-sm text-on-surface-variant">Affinity: Shields</p>
+</div>
+<span class="crystal-node"></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Horizontal Feature Bar -->
+<div class="bg-surface-container-highest/50 border-y border-outline-variant p-8 flex flex-wrap justify-center gap-12 text-center">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-secondary text-4xl mb-2">groups</span>
+<span class="font-label-bold text-label-bold uppercase">Real-time PvP</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-secondary text-4xl mb-2">military_tech</span>
+<span class="font-label-bold text-label-bold uppercase">4 Hero Tiers</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-secondary text-4xl mb-2">language</span>
+<span class="font-label-bold text-label-bold uppercase">12 Languages</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-secondary text-4xl mb-2">leaderboard</span>
+<span class="font-label-bold text-label-bold uppercase">Global Leaderboard</span>
+</div>
+</div>
+<div class="text-center mt-20">
+<p class="font-headline-md text-headline-md italic text-primary-fixed mb-8">Pick your tribe. Master your tiles. Crush your rivals.</p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+<button class="glowing-btn-primary w-full max-w-[250px] px-8 py-3 rounded-xl font-label-bold text-label-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300">
+<span class="material-symbols-outlined text-[24px]">play_arrow</span>
+        Google Play
+    </button>
+<a href="https://apps.apple.com/us/app/battle-of-the-tribes/id6759261063" target="_blank" class="glowing-btn-primary w-full max-w-[250px] px-8 py-3 rounded-xl font-label-bold text-label-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300 no-underline">
+<span class="material-symbols-outlined text-[24px]">smartphone</span>
+        App Store
+    </a>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer Shell -->
+<footer id="support" class="bg-surface-container-lowest dark:bg-surface-container-lowest full-width py-12 border-t-4 border-surface-container-highest bg-surface-container-lowest border-t-2 border-outline-variant/20 flex flex-col md:flex-row justify-between items-center px-12 w-full gap-8">
+<div class="flex flex-col gap-2 text-center md:text-left">
+<div class="text-label-bold font-label-bold text-tertiary-fixed text-xl">Battle of the Tribes</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant opacity-80">© 2026 Illia Tkachenko. All rights reserved.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed underline transition-all text-label-bold font-label-bold opacity-80 hover:opacity-100" target="_blank" href="https://ilyatkachenko.github.io/battle-of-the-tribes-privacy/">Privacy Policy</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed underline transition-all text-label-bold font-label-bold opacity-80 hover:opacity-100" target="_blank" href="https://ilyatkachenko.github.io/battle-of-the-tribes-privacy/terms">Terms of Service</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed underline transition-all text-label-bold font-label-bold opacity-80 hover:opacity-100" target="_blank" href="https://ilyatkachenko.github.io/battle-of-the-tribes-privacy/account-deletion">Account deletion</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed underline transition-all text-label-bold font-label-bold opacity-80 hover:opacity-100" target="_blank" href="https://ilyatkachenko.github.io/battle-of-the-tribes-privacy/support">Support</a>
+</div>
+</footer>
 </body></html>
